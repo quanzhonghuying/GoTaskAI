@@ -25,8 +25,8 @@ GoTaskAI は以下のコンポーネントで構成される Web アプリケー
 ## 2. アーキテクチャ構成図
 ```mermaid
 graph TD
-    FE[フロントエンド (React)]
-    BE[バックエンド (Go + Gin)]
+    FE[フロントエンド React]
+    BE[バックエンド Go + Gin]
     DB[(PostgreSQL)]
     AI[OpenAI API]
     AWS[(AWS Infrastructure)]
@@ -35,6 +35,7 @@ graph TD
     BE --> DB
     BE --> AI
     BE --> AWS
+```
 ## 3. モジュール構成
 
 ### 3.1 フロントエンド (React)
@@ -74,19 +75,19 @@ sequenceDiagram
     participant AI as OpenAI API
 
     User->>FE: ログイン情報入力
-    FE->>BE: /api/v1/login (POST)
+    FE->>BE: /api/v1/login POST
     BE->>DB: 認証確認
     DB-->>BE: 認証結果
     BE-->>FE: JWT トークン返却
 
     User->>FE: タスク作成要求
-    FE->>BE: /api/v1/tasks (POST)
+    FE->>BE: /api/v1/tasks POST
     BE->>DB: タスク保存
     DB-->>BE: 保存成功
     BE->>AI: タスク内容送信
     AI-->>BE: 要約・提案返却
     BE-->>FE: 結果表示
-
+```
 ## 5. API 設計（概要）
 
 | エンドポイント | メソッド | 概要 |
