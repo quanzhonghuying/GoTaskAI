@@ -10,8 +10,8 @@ AWS 上にデプロイし、可用性と拡張性を確保する。
 ## 2. アーキテクチャ構成図
 ```mermaid
 graph TD
-    FE[Frontend (React)]
-    BE[Backend (Go + Gin)]
+    FE[Frontend React]
+    BE[Backend Go+Gin]
     DB[(PostgreSQL)]
     AI[OpenAI API]
     AWS[(AWS Infrastructure)]
