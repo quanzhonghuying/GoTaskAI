@@ -20,6 +20,7 @@ graph TD
     BE --> DB
     BE --> AI
     BE --> AWS
+
 ```
 ## 3. モジュール構成
 
