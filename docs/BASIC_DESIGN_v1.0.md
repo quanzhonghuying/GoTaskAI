@@ -25,6 +25,10 @@ graph TD
 | タスク詳細画面 | title | string | ○ | タスクタイトル |
 | タスク詳細画面 | description | text | - | タスクの詳細 |
 | タスク詳細画面 | completed | boolean | - | 完了フラグ |
+| タスク編集画面 | id | int | ○ | 編集対象のタスクID |
+| タスク編集画面 | title | string | ○ | 修正後のタスクタイトル |
+| タスク編集画面 | description | text | - | 修正後のタスク詳細 |
+| タスク編集画面 | completed | boolean | - | 完了フラグ（true/false 選択可） |
 
 ---
 
