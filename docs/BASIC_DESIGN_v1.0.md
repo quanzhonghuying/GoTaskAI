@@ -214,7 +214,31 @@ graph TD
 
     - 404: タスク未存在
 
-## 3. エラーメッセージ一覧
+## 3. DB 項目定義（概要）
+
+### users テーブル
+| カラム名 | 型 | 制約 | 説明 |
+|----------|----|------|------|
+| id | SERIAL | PK | ユーザーID |
+| email | VARCHAR(255) | UNIQUE, NOT NULL | メールアドレス |
+| password_hash | VARCHAR(255) | NOT NULL | ハッシュ化済パスワード |
+| created_at | TIMESTAMP | DEFAULT now() | 作成日時 |
+
+### tasks テーブル
+| カラム名 | 型 | 制約 | 説明 |
+|----------|----|------|------|
+| id | SERIAL | PK | タスクID |
+| user_id | INT | FK → users.id | 所属ユーザー |
+| title | VARCHAR(255) | NOT NULL | タスクタイトル |
+| description | TEXT | - | タスク詳細 |
+| completed | BOOLEAN | DEFAULT false | 完了フラグ |
+| created_at | TIMESTAMP | DEFAULT now() | 作成日時 |
+| updated_at | TIMESTAMP | DEFAULT now() | 更新日時 |
+
+---
+
+
+## 4. エラーメッセージ一覧
 
 | コード  | メッセージ                  | 説明               |
 |---------|-----------------------------|--------------------|
