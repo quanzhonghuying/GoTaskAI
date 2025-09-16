@@ -36,7 +36,7 @@
     "updated_at": "2025-09-16T11:00:00Z"
   }
 ]
-## 3.1 タスク管理 (Tasks)
+```
 
 ### (2) タスク新規作成
 - **POST** `/tasks`
@@ -48,3 +48,75 @@
   "user_id": 101
 }
 ```
+- **Response (201)**
+```json
+{
+  "id": 2,
+  "message": "Task created"
+}
+```
+### (3) タスク更新
+- **PUT /tasks/{id}**
+- **Request**
+```json
+{
+  "title": "Go API 開発学習（完了）",
+  "status": "done"
+}
+```
+- **Response (200)**
+```json
+{
+  "id": 2,
+  "message": "Task updated"
+}
+```
+### (4) タスク削除
+- **DELETE /tasks/{id}**
+- **Response (200)**
+```json
+{
+  "id": 2,
+  "message": "Task deleted"
+}
+```
+### 3.2 ユーザー管理 (Users, 基本機能)
+### (1) ユーザー一覧取得
+- **GET /users**
+- **Response (200)**
+```json
+[
+  {
+    "id": 101,
+    "name": "Alice",
+    "email": "alice@example.com"
+  }
+]
+```
+### (2) ユーザー新規作成
+- **POST /users**
+- **Request**
+```json
+{
+  "name": "Bob",
+  "email": "bob@example.com"
+}
+```
+- **Response (201)**
+```json
+{
+  "id": 102,
+  "message": "User created"
+}    
+```
+### (4) エラーレスポンス例
+```json
+{
+  "error": "Invalid request payload"
+}
+```
+### 5. 今後の拡張予定
+
+- **ユーザー認証機能 (JWT)**
+- **タスクにタグ付与 (tags)**
+- **ページング取得 (例: tasks?limit=10&offset=0)**
