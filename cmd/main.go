@@ -1,32 +1,42 @@
 package main
 
 import (
-	"fmt"
-	"log"
+    "log"
 
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq" // PostgreSQL ドライバ
+    "github.com/gin-gonic/gin"
+    "github.com/quanzhonghuying/GoTaskAI/internal/db"
+    "github.com/quanzhonghuying/GoTaskAI/internal/repository"
+    "github.com/quanzhonghuying/GoTaskAI/internal/service"
+    "github.com/quanzhonghuying/GoTaskAI/internal/api"
 )
 
 func main() {
-	// DSN (Data Source Name)
-	dsn := "user=gotaskai_user password=1qaz!QAZ dbname=gotaskai sslmode=disable"
+    // DB 初期化
+    database, err := db.InitDB()
+    if err != nil {
+        log.Fatal("DB 初期化失敗: ", err)
+    }
 
-	// 1. データベースに接続
-	db, err := sqlx.Connect("postgres", dsn)
-	if err != nil {
-		log.Fatalf("DB接続失敗: %v", err)
-	}
-	defer db.Close()
+    // Repository 初期化
+    userRepo := repository.NewUserRepository(database)
+    taskRepo := repository.NewTaskRepository(database)
 
-	fmt.Println("✅ DB接続成功")
+    // Service 初期化
+    userService := service.NewUserService(userRepo)
+    taskService := service.NewTaskService(taskRepo)
 
-	// 2. 簡単なクエリを実行して確認
-	var currentTime string
-	err = db.Get(&currentTime, "SELECT NOW()")
-	if err != nil {
-		log.Fatalf("クエリ実行失敗: %v", err)
-	}
+    // Handler 初期化
+    userHandler := api.NewUserHandler(userService)
+    taskHandler := api.NewTaskHandler(taskService)
 
-	fmt.Println("現在時刻:", currentTime)
+    // Gin ルーター設定
+    r := gin.Default()
+    r.POST("/register", userHandler.Register)
+    r.POST("/login", userHandler.Login)
+    r.POST("/tasks", taskHandler.CreateTask)
+    r.GET("/tasks/:userID", taskHandler.ListTasks)
+    r.PUT("/tasks/:taskID/complete", taskHandler.MarkTaskCompleted)
+
+    // サーバー起動
+    r.Run(":8080")
 }
