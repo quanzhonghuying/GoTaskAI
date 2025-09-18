@@ -2,7 +2,7 @@ package repository
 
 import (
     "github.com/jmoiron/sqlx"
-    "github.com/your_project/internal/model"
+    "github.com/quanzhonghuying/GoTaskAI/internal/model"
 )
 
 // TaskRepository は tasks テーブルへのアクセスを担当する
