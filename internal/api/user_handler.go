@@ -21,7 +21,6 @@ func NewUserHandler(service *service.UserService) *UserHandler {
 // POST /register
 func (h *UserHandler) Register(c *gin.Context) {
     var req struct {
-        Name     string `json:"name"`
         Email    string `json:"email"`
         Password string `json:"password"`
     }
@@ -30,7 +29,7 @@ func (h *UserHandler) Register(c *gin.Context) {
         return
     }
 
-    err := h.service.RegisterUser(req.Name, req.Email, req.Password)
+    err := h.service.RegisterUser(req.Email, req.Password)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
@@ -61,7 +60,6 @@ func (h *UserHandler) Login(c *gin.Context) {
         "message": "ログイン成功",
         "user": gin.H{
             "id":    user.ID,
-            "name":  user.Name,
             "email": user.Email,
         },
     })

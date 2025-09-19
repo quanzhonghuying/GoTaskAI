@@ -21,18 +21,17 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 // RegisterUser ユーザー登録処理
 // - パスワードを bcrypt でハッシュ化
 // - DB に保存
-func (s *UserService) RegisterUser(name, email, password string) error {
+func (s *UserService) RegisterUser(email, password string) error {
+    // パスワードをハッシュ化
     hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
     if err != nil {
         return err
     }
 
     user := &model.User{
-        Name:     name,
-        Email:    email,
-        Password: string(hashed),
+        Email:        email,
+        PasswordHash: string(hashed), // ✅ Password → PasswordHash
     }
-
     return s.repo.Create(user)
 }
 
@@ -45,7 +44,7 @@ func (s *UserService) LoginUser(email, password string) (*model.User, error) {
         return nil, errors.New("ユーザーが存在しません")
     }
 
-    err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+    err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
     if err != nil {
         return nil, errors.New("パスワードが正しくありません")
     }

@@ -3,25 +3,23 @@ package db
 import (
     "log"
 
-    "github.com/jmoiron/sqlx"
-    _ "github.com/lib/pq"
+    _ "github.com/lib/pq"     // PostgreSQL ドライバ
+    "github.com/jmoiron/sqlx" // sqlx ライブラリ
 )
 
-// DB 接続オブジェクト（アプリ全体で共有）
-var DB *sqlx.DB
-
 // InitDB: PostgreSQL 接続初期化
-func InitDB() {
+func InitDB() (*sqlx.DB, error) {
     dsn := "user=gotaskai_user password=1qaz!QAZ dbname=gotaskai sslmode=disable"
 
-    db, err := sqlx.Open("postgres", dsn)
+    db, err := sqlx.Connect("postgres", dsn)
     if err != nil {
-        log.Fatalf("DB 接続失敗: %v", err)
+        return nil, err
     }
 
     if err := db.Ping(); err != nil {
-        log.Fatalf("DB 通信確認失敗: %v", err)
+        return nil, err
     }
 
-    DB = db
+    log.Println("✅ DB 接続成功")
+    return db, nil // ✅ 最後に必ず返す
 }

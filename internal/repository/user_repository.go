@@ -10,6 +10,11 @@ type UserRepository struct {
     db *sqlx.DB
 }
 
+// コンストラクタ
+func NewUserRepository(db *sqlx.DB) *UserRepository {
+    return &UserRepository{db: db}
+}
+
 // メールアドレスでユーザーを検索
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
     var user model.User
@@ -21,10 +26,11 @@ func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 }
 
 // 新規ユーザー作成
+// Create ユーザー新規登録
 func (r *UserRepository) Create(user *model.User) error {
     _, err := r.db.Exec(
-        "INSERT INTO users (name, email, password) VALUES ($1, $2, $3)",
-        user.Name, user.Email, user.Password,
+        "INSERT INTO users (email, password_hash) VALUES ($1, $2)",
+        user.Email, user.PasswordHash,
     )
     return err
 }
