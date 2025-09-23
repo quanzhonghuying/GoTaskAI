@@ -2,12 +2,14 @@ package main
 
 import (
     "log"
+    "time"
 
+    "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
+    "github.com/quanzhonghuying/GoTaskAI/internal/api"
     "github.com/quanzhonghuying/GoTaskAI/internal/db"
     "github.com/quanzhonghuying/GoTaskAI/internal/repository"
     "github.com/quanzhonghuying/GoTaskAI/internal/service"
-    "github.com/quanzhonghuying/GoTaskAI/internal/api"
 )
 
 func main() {
@@ -31,6 +33,18 @@ func main() {
 
     // Gin ルーター設定
     r := gin.Default()
+
+    // ✅ CORS 設定追加
+    r.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:5173"}, 
+        AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+        MaxAge:           12 * time.Hour,
+    }))
+
+    // ルート設定
     r.POST("/register", userHandler.Register)
     r.POST("/login", userHandler.Login)
     r.POST("/tasks", taskHandler.CreateTask)
